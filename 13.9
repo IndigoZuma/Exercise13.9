@@ -1,0 +1,110 @@
+import java.util.Date;
+
+public class Exercise13_09 {
+    public static void main(String[] args) {
+        // Create three Circle objects
+        Circle circle1 = new Circle(5, "red", true);
+        Circle circle2 = new Circle(5, "green", false);
+        Circle circle3 = new Circle(4, "green", false);
+
+        // Display results
+        System.out.println("Circle1 radius: " + circle1.getRadius());
+        System.out.println("Circle2 radius: " + circle2.getRadius());
+        System.out.println("Circle3 radius: " + circle3.getRadius());
+
+        System.out.println("Circle1 is " + (circle1.equals(circle2) ? "" : "not ") +
+            "equal to circle2");
+
+        System.out.println("Circle1 is " + (circle1.equals(circle3) ? "" : "not ") +
+            "equal to circle3");
+        
+        System.out.println("Circle1 compared to circle2: " + circle1.compareTo(circle2));
+        System.out.println("Circle1 compared to circle3: " + circle1.compareTo(circle3));
+    }
+}
+
+abstract class GeometricObject {
+    private String color = "white";
+    private boolean filled;
+    private Date dateCreated;
+    
+    protected GeometricObject() {
+        dateCreated = new Date();
+    }
+    
+    protected GeometricObject(String color, boolean filled) {
+        this.color = color;
+        this.filled = filled;
+        dateCreated = new Date();
+    }
+    
+    public String getColor() { return color; }
+    public void setColor(String color) { this.color = color; }
+    public boolean isFilled() { return filled; }
+    public void setFilled(boolean filled) { this.filled = filled; }
+    public Date getDateCreated() { return dateCreated; }
+    
+    @Override
+    public String toString() {
+        return "created on " + dateCreated + "\ncolor: " + color + 
+               " and filled: " + filled;
+    }
+    
+    public abstract double getArea();
+    public abstract double getPerimeter();
+}
+
+class Circle extends GeometricObject implements Comparable<Circle> {
+    private double radius;
+    
+    public Circle() {}
+    
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+    
+    public Circle(double radius, String color, boolean filled) {
+        super(color, filled);
+        this.radius = radius;
+    }
+    
+    public double getRadius() {
+        return radius;
+    }
+    
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+    
+    @Override
+    public double getArea() {
+        return radius * radius * Math.PI;
+    }
+    
+    public double getDiameter() {
+        return 2 * radius;
+    }
+    
+    @Override
+    public double getPerimeter() {
+        return 2 * radius * Math.PI;
+    }
+    
+    public void printCircle() {
+        System.out.println("The circle is created " + getDateCreated() +
+                          " and the radius is " + radius);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Circle circle = (Circle) obj;
+        return Double.compare(circle.radius, radius) == 0;
+    }
+    
+    @Override
+    public int compareTo(Circle other) {
+        return Double.compare(this.radius, other.radius);
+    }
+}
